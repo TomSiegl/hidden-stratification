@@ -58,7 +58,7 @@ def load_state_dicts(load_path, model, optimizer, scheduler, logger):
     }
     if load_path != None:
         logger.info(f'Loading state_dict from {load_path}...')
-        checkpoint = torch.load(os.path.join(load_path))
+        checkpoint = torch.load(os.path.join(load_path), weights_only=False)
         model.load_state_dict(checkpoint['state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer'])
         scheduler.load_state_dict(checkpoint['scheduler'])
@@ -195,7 +195,7 @@ class GEORGEClassification:
         best_model_path = os.path.join(self.save_dir, 'best_model.pt')
         if os.path.exists(best_model_path):
             self.logger.basic_info('\nTraining complete. Loading best model.')
-            checkpoint = torch.load(best_model_path)
+            checkpoint = torch.load(best_model_path, weights_only=False)
             model.load_state_dict(checkpoint['state_dict'])
         else:
             self.logger.basic_info('Training complete. No best model found.')

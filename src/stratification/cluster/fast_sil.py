@@ -3,7 +3,7 @@
 to use CUDA for Silhouette score computation.'''
 
 import numpy as np
-from sklearn.utils import gen_batches, get_chunk_n_rows
+from sklearn.utils._chunking import gen_batches, get_chunk_n_rows
 from sklearn.metrics.cluster._unsupervised import *
 from sklearn.metrics import silhouette_samples as s_sil
 import torch

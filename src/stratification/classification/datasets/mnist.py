@@ -22,14 +22,12 @@ class MNISTDataset(GEORGEDataset):
     
     See <https://pytorch.org/docs/stable/_modules/torchvision/datasets/mnist.html>.
     """
-    resources = [('http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz',
-                  'f68b3c2dcbeaaa9fbdd348bbdeb94873'),
-                 ('http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz',
-                  'd53e105ee54ea40749a09fcbcd1e9432'),
-                 ('http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz',
-                  '9fb629c4189551a2d022fa330f9573f3'),
-                 ('http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz',
-                  'ec29112dd5afa0611ce80d1b7f02629c')]
+    resources = [
+        ("https://ossci-datasets.s3.amazonaws.com/mnist/train-images-idx3-ubyte.gz", "f68b3c2dcbeaaa9fbdd348bbdeb94873"),
+        ("https://ossci-datasets.s3.amazonaws.com/mnist/train-labels-idx1-ubyte.gz", "d53e105ee54ea40749a09fcbcd1e9432"),
+        ("https://ossci-datasets.s3.amazonaws.com/mnist/t10k-images-idx3-ubyte.gz", "9fb629c4189551a2d022fa330f9573f3"),
+        ("https://ossci-datasets.s3.amazonaws.com/mnist/t10k-labels-idx1-ubyte.gz", "ec29112dd5afa0611ce80d1b7f02629c"),
+    ]
     true_subclass_names = [
         '0 - zero', '1 - one', '2 - two', '3 - three', '4 - four', '5 - five', '6 - six',
         '7 - seven', '8 - eight', '9 - nine'
@@ -51,7 +49,7 @@ class MNISTDataset(GEORGEDataset):
         """Loads the U-MNIST dataset from the data file created by self._download"""
         data_file = f'{self.split}.pt'
         logging.info(f'Loading {self.split} split...')
-        data, original_labels = torch.load(os.path.join(self.processed_folder, data_file))
+        data, original_labels = torch.load(os.path.join(self.processed_folder, data_file), weights_only=False)
 
         logging.info('Original label counts:')
         logging.info(np.bincount(original_labels))
@@ -150,12 +148,12 @@ class MNISTDataset(GEORGEDataset):
         self._create_val_split()
 
     def _create_val_split(self, seed=0, val_proportion=0.2):
-        data, original_labels = torch.load(os.path.join(self.processed_folder, 'train.pt'))
+        data, original_labels = torch.load(os.path.join(self.processed_folder, 'train.pt'), weights_only=False)
         original_labels = original_labels.numpy()
         original_label_counts = np.bincount(original_labels)
         assert all(i > 0 for i in original_label_counts), \
             'set(labels) must consist of consecutive numbers in [0, S]'
-        val_quota = np.round(original_label_counts * val_proportion).astype(np.int)
+        val_quota = np.round(original_label_counts * val_proportion).astype(np.int64)
 
         # reset seed here in case random fns called again (i.e. if get_loaders called twice)
         prev_state = random.getstate()
@@ -249,7 +247,7 @@ def open_maybe_compressed_file(path):
     """Return a file object that possibly decompresses 'path' on the fly.
        Decompression occurs when argument `path` is a string and ends with '.gz' or '.xz'.
     """
-    if not isinstance(path, torch._six.string_classes):
+    if not isinstance(path, str):
         return path
     if path.endswith('.gz'):
         import gzip

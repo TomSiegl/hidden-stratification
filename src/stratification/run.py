@@ -45,7 +45,7 @@ def main():
             model_path = os.path.join(erm_dir,
                                       f'{config["classification_config"]["eval_mode"]}_model.pt')
             print(f'Loading model from {model_path}...')
-            model.load_state_dict(torch.load(model_path)['state_dict'])
+            model.load_state_dict(torch.load(model_path, weights_only=False)['state_dict'])
         erm_dir = harness.classify(config['classification_config'], model, dataloaders,
                                    mode=first_mode)
 
@@ -55,7 +55,7 @@ def main():
 
     if config['mode'] == 'george':
         if not config['classification_config']['bit_pretrained'] and not rep_done:
-            model.load_state_dict(torch.load(os.path.join(erm_dir, 'best_model.pt'))['state_dict'])
+            model.load_state_dict(torch.load(os.path.join(erm_dir, 'best_model.pt'), weights_only=False)['state_dict'])
 
         set_seed(config['seed'], use_cuda)
         # Dimensionality-reduce the model activations

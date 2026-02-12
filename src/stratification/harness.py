@@ -183,7 +183,7 @@ class GEORGEHarness:
     def reduce(self, reduction_config, reduction_model, inputs_path):
         save_dir = os.path.join(os.path.dirname(inputs_path), f'reduce_{get_unique_str()}')
         self._save_config(save_dir, reduction_config, msg='Saving reduction step config')
-        inputs = torch.load(inputs_path)
+        inputs = torch.load(inputs_path, weights_only=False)
         assert len(set(inputs.keys()) & {'train', 'val', 'test'}) == 3, \
             'Must have ["train", "val", "test"] splits.'
         for split, split_inputs in inputs.items():
@@ -244,7 +244,7 @@ class GEORGEHarness:
         """
         save_dir = os.path.join(os.path.dirname(inputs_path), f'cluster_{get_unique_str()}')
         self._save_config(save_dir, cluster_config, msg='Saving cluster step config')
-        inputs = torch.load(inputs_path)
+        inputs = torch.load(inputs_path, weights_only=False)
         assert len(set(inputs.keys()) & {'train', 'val', 'test'}) == 3, \
             'Must have ["train", "val", "test"] splits.'
         for split, split_inputs in inputs.items():
@@ -303,7 +303,7 @@ class GEORGEHarness:
             subclass_labels = 'superclass'
 
         if '.pt' in subclass_labels:  # file path specified
-            subclass_labels = torch.load(subclass_labels)
+            subclass_labels = torch.load(subclass_labels, weights_only=False)
         else:  # keyword specified
             kw = subclass_labels
             subclass_labels = defaultdict(lambda: kw)

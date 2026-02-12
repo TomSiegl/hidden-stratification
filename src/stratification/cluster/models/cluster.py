@@ -161,8 +161,8 @@ class OverclusterModel:
         # associated sub-clustering predictors in self.cluster_objs.
         # Collate and return the new predictions in oc_preds and val_oc_preds.
         self.cluster_objs = []
-        oc_preds = np.zeros(len(activ), dtype=np.int)
-        val_oc_preds = np.zeros(len(val_activ), dtype=np.int)
+        oc_preds = np.zeros(len(activ), dtype=np.int64)
+        val_oc_preds = np.zeros(len(val_activ), dtype=np.int64)
 
         for i in self.pred_vals:
             sub_activ = activ[orig_preds == i]
@@ -263,7 +263,7 @@ class OverclusterModel:
         oc_to_keep = self.filter_overclusters(activ, losses, orig_preds, oc_preds, val_oc_preds)
         self.label_map = self.create_label_map(num_orig_preds, oc_to_keep, oc_preds)
 
-        new_preds = np.zeros(len(activ), dtype=np.int)
+        new_preds = np.zeros(len(activ), dtype=np.int64)
         for i in range(num_oc):
             new_preds[oc_preds == i] = self.label_map[i]
 
@@ -275,14 +275,14 @@ class OverclusterModel:
         # Get clusters from base model
         base_preds = self.base_model.predict(activ)
         # Get overclusters
-        oc_preds = np.zeros(len(activ), dtype=np.int)
+        oc_preds = np.zeros(len(activ), dtype=np.int64)
         for i in self.pred_vals:
             subfeats = activ[base_preds == i]
             subpreds = self.cluster_objs[i].predict(subfeats) + self.oc_fac * i
             oc_preds[base_preds == i] = subpreds
 
         # Merge overclusters appropriately and return final predictions
-        new_preds = np.zeros(len(activ), dtype=np.int)
+        new_preds = np.zeros(len(activ), dtype=np.int64)
         for i in range(len(self.pred_vals) * self.oc_fac):
             new_preds[oc_preds == i] = self.label_map[i]
         return new_preds

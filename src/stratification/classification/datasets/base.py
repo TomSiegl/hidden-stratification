@@ -188,7 +188,7 @@ def generate_random_labels(superclass_labels, subclass_labels, proportions=None,
         num_subclass_examples = np.sum(superclass_indices)
         subclass_proportions = proportions[superclass]
         cumulative_prop = np.cumsum(subclass_proportions)
-        cumulative_prop = np.round(cumulative_prop * num_subclass_examples).astype(np.int)
+        cumulative_prop = np.round(cumulative_prop * num_subclass_examples).astype(np.int64)
         cumulative_prop = np.concatenate(([0], cumulative_prop))
         assert (cumulative_prop[-1] == num_subclass_examples)
         mock_sub = -np.ones(num_subclass_examples)
