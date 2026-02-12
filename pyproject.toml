@@ -6,7 +6,28 @@ build-backend = "setuptools.build_meta"
 name = "stratification"
 version = "0.1.0"
 description = "Local development package"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
+dependencies = [
+    "cmake==4.2.*",
+    "gdown==5.2.*",
+    "ipykernel==7.2.*",
+    "ipywidgets==8.1.*",
+    "joblib==1.5.*",
+    "jsonargparse==4.46.*",
+    "jsonschema==4.26.*",
+    "jupyterlab==4.5.*",
+    "matplotlib==3.10.*",
+    "numba==0.63.*",
+    "numpy==2.3.*",
+    "opencv-python-headless==4.13.*",
+    "pandas==3.0.*",
+    "progress==1.6.*",
+    "scikit-learn==1.8.*",
+    "seaborn==0.13.*",
+    "torchvision==0.25.*",
+    "umap-learn==0.5.*",
+    "yapf==0.43.*",
+]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
