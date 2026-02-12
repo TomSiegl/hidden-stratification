@@ -20,7 +20,7 @@ dependencies = [
     "numba==0.63.*",
     "numpy==2.*",
     "opencv-python-headless==4.13.*",
-    "pandas==3.0.*",
+    "pandas==2.*",
     "progress==1.6.*",
     "scikit-learn==1.8.*",
     "seaborn==0.13.*",
