@@ -42,14 +42,14 @@ pip install -e .
 We provide a simple demo notebook at `tutorials/Basic-Tutorial.ipynb`.
 This example can also be run as a script:
 ```bash
-python stratification/demo.py configs/demo_config.json
+python src/stratification/demo.py configs/demo_config.json
 ```
 
 ## Configuration options
 
 The first argument to the script should be the path to the configuration file. Default configurations for the GEORGE experiments in the paper are in the `configs/` directory. The configuration can also be modified by directly set config values using the command-line interface. Use `=` to demarcate key-value pairs, and use `.` to access nested dictionaries as specified in the config; for example:
 ```bash
-python stratification/run.py configs/mnist_george_config.json exp_dir=checkpoints/new-experiment classification_config.num_epochs=50
+python src/stratification/run.py configs/mnist_george_config.json exp_dir=checkpoints/new-experiment classification_config.num_epochs=50
 ```
 
 The modified config will be saved at `config['exp_dir']`. For the complete configuration definition, see `stratification/utils/schema.py`.
